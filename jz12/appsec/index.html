@@ -80,6 +80,7 @@ public void checkAdminCookie(HttpServletRequest request){
 					<section>
 						<h2>Don't trust the client</h2><br/>
 						<div class="fragment">
+							<h3>Don't store secrets on the client</h3></br>
 							<h3>Don't allow the client to make security decisions</h3>
 							<p>Including client side input validation</p>
 						</div>
@@ -285,7 +286,7 @@ In jsp:		&lt;p&gt;Hello, &lt;c:out value="${name}"/&gt;&lt;/p&gt;
 Resulting html:	&lt;p&gt;Hello, &#38;lt;script&#38;gt;alert(&#38;#39;This is XSS&#38;#39;)&#38;lt;/script&#38;gt;&lt;/p&gt;
 						</code></pre>							
 
-						<p class="fragment"><br/>The challenge: escape for the <i>correct context, everywhere</i></p>
+						<p class="fragment">The challenge: escape for the <i>correct context, everywhere</i></p>
 
 					</section>
 					<!--<section>
@@ -302,9 +303,9 @@ Resulting html:	&lt;p&gt;Hello, &#38;lt;script&#38;gt;alert(&#38;#39;This is XSS
 						</div>
 						<div class="fragment"><br/>
 							<h3>DOM based XSS</h3>
-							<p>Scripts reading user data + </p>
-							<p>writing (.innerHtml, .outerHtml, .html(), document.write, createElement)</p>
-							<p class="fragment">OR executing (eval(), setInterval(), setTimeout(), location.replace)</p>
+							<p>Scripts reading user data and then </p>
+							<p>writing html(<code>.innerHtml, .outerHtml, .html(), document.write, createElement</code>)</p>
+							<p class="fragment">or executing (<code>eval(), setInterval(), setTimeout(), location.replace</code>)</p>
 						</div>						
 					</section>
 					<section>
@@ -313,6 +314,7 @@ Resulting html:	&lt;p&gt;Hello, &#38;lt;script&#38;gt;alert(&#38;#39;This is XSS
 								<li>Very, very widespread</li>
 								<li>Bad, but often* limited to single sessions</li>
 								<li>Difficult to get right</li>
+								<li>Use input validation, output escaping and consider implmenting a Content Security Policy</li>
 							</ul>
 					</section>
 				</section>
@@ -382,25 +384,39 @@ JSESSIONID=y2rzQ9JRgrP9J3vCX3phJ1XJbDdgLqgDSBYM7qBRGSDQr7PdnF1B!-1147520699;
 					<p class="fragment">CSRF</p>
 				</section>				
 				<section>
-					<h2>More reading</h2>
-					<p>
-						These slides are available at <a href="http://jonare.github.com/jz12/">jonare.github.com/jz12/</a>
-					</p>
-					<p>
-						owasp.org</br>
-						<a href="https://www.owasp.org/index.php/OWASP_Broken_Web_Applications_Project">OWASP Broken Web Applications Project</a></br>
-						<a href="https://www.owasp.org/index.php/Top_10_2010-Main">OWASP Top 10</a></br>
-					</p>
-					<p>
-						XSS</br>
-						<a href="http://www.insecurelabs.org/task">Try XSS yourself at Erlend Oftedal's insecurelabs.org</a></br>
-						<a href="http://sec.omar.li/2012/05/overview-of-dom-xss.html">An overview of DOM XSS</a></br>
-						<a href="http://html5sec.org/">Attack vectors at html5sec.org</a></br>
-						<a href="http://ha.ckers.org/xss.html">Attack vectors at ha.ckers.org</a></br>
-					</p>
+					<h3>More reading</h3>
+					<div class="smallish">
+						<p>
+							These slides are available at <a href="http://jonare.github.com/jz12/">jonare.github.com/jz12/</a>
+						</p>
+						<p>
+							owasp.org</br>
+							<a href="https://www.owasp.org/index.php/OWASP_Broken_Web_Applications_Project">OWASP Broken Web Applications Project</a></br>
+							<a href="https://www.owasp.org/index.php/Top_10_2010-Main">OWASP Top 10</a></br>
+						</p>
+						<p>
+							XSS</br>
+							<a href="http://www.insecurelabs.org/task">Try XSS yourself at Erlend Oftedal's insecurelabs.org</a></br>
+							<a href="http://sec.omar.li/2012/05/overview-of-dom-xss.html">An overview of DOM XSS</a></br>
+							<a href="http://html5sec.org/">Attack vectors at html5sec.org</a></br>
+							<a href="http://ha.ckers.org/xss.html">Attack vectors at ha.ckers.org</a></br>
+						</p>
+						<p>
+							Tools</br>
+							<a href="https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project">OWASP Zed Attack Proxy (ZAP)</a></br>
+							<a href="https://addons.mozilla.org/en-US/firefox/addon/tamper-data/">Firefox add-on Tamper Data</a></br>
+						</p>
+						<p>
+							Blog</br>
+							<a href="http://www.dotnetnoob.com/2012/09/security-through-http-response-headers.html">The .NET n00b - Security through http reponse headers</a></br>
+							<a href="http://www.troyhunt.com/">troyhunt.com</a></br>
+						</p>							
+					</div>
 					<p><h5><br/>
 						<a href="http://www.jonare.no/">Jon Are Rakvåg</a> | <a href="mailto:jonare@jonare.no">jonare@jonare.no</a> | <a href="https://twitter.com/jonarer">@jonarer</a><br/>
 					</h5></p>	
+					
+					
 					<span><small>Built using <a href="https://github.com/hakimel/reveal.js">reveal.js</a></small></span>					
 				</section>				
 			</div>

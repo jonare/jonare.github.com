@@ -260,6 +260,12 @@ body {
 	border-bottom: 2px solid white;
 }
 
+.smallish {
+	font-size: 0.75em;
+	line-height: 1.1em;
+	vertical-align: top;
+}
+
 /*********************************************
  * CONTROLS
  *********************************************/
