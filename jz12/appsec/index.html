@@ -221,30 +221,7 @@ public void updateUser(String userSuppliedName, long userID){
 							<small>Photo: Sahil Anand</small>
 						</div>					
 					</section>
-<!--					<section>
-						<h3>Other XSS triggers</h3>
-						<pre class="fragment"><code>User input outside any html tags + new script tag
-						
-&lt;p&gt;Hello, <span class="userInput-underline">&lt;script&gt;evil()&lt;/script&gt;</span>&lt;/p&gt;
-						</code></pre>
-						<pre class="fragment"><code>User input breaks out of attribute &amp; tag + creates new img tag
-						
-&lt;input type=&quot;hidden&quot; value=&quot;<span class="userInput-underline">hack&quot;/&gt;&lt;img src=invalid onerror=&quot;evil()</span>&quot;&gt;
-						</code></pre>
-						<pre class="fragment"><code>User input breaks out of attribute, manipulates tag type + event handler
-						
-&lt;input value=<span class="userInput-underline">hack type=img src=x onerror=evil()</span>&gt;	
-						</code></pre>
-						<pre class="fragment"><code>User input breaks out of variable in script context
-						
-&lt;script&gt;
-    var input = &#39;<span class="userInput-underline">hack&#39;&#59; evil()&#59;//</span>&#39;&#59;
-&lt;/script&gt;					
-						</code></pre>	
-						<aside class="notes">
-							Why would I want to display popups to myself? I don't. 
-						</aside>						
-					</section>-->
+
 					<section>
 						<h2>XSS attack goals</h2></br>
 						<div class="fragment">
@@ -346,8 +323,8 @@ JSESSIONID=y2rzQ9JRgrP9J3vCX3phJ1XJbDdgLqgDSBYM7qBRGSDQr7PdnF1B!-1147520699;
 				<section>
 					<section>
 						<h2>Cross Site Request Forgery (CSRF)</h2>
-						<h3>Fooling the browser's session handling</h3>
-						
+						<h3>Fooling the browser's session handling</h3></br>
+						<h2 class="fragment">Demo</h2>
 						<p class="fragment"><br/><i>Predictable</i> requests to a site can be forged</p>
 					</section>
 					<section>
@@ -425,9 +402,6 @@ JSESSIONID=y2rzQ9JRgrP9J3vCX3phJ1XJbDdgLqgDSBYM7qBRGSDQr7PdnF1B!-1147520699;
 					<span><small>Built using <a href="https://github.com/hakimel/reveal.js">reveal.js</a></small></span>					
 				</section>				
 			</div>
-			
-			<!-- TODO: add 
-						<li><a href="https://github.com/hakimel/reveal.js">Source code on github</a></li>-->
 
 			<!-- The navigational controls UI -->
 			<aside class="controls">
