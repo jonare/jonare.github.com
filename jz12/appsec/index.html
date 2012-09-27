@@ -140,9 +140,9 @@ public void updateUser(String userSuppliedName, long userID){
 						</code></pre><br/>
 						<pre class="fragment"><p>Input: <span class="userInput">jon</span></p>
 SELECT email FROM users WHERE username='<span class="userInput">jon</span>';</pre><br/>
-						<pre class="fragment"><p>Input: <span class="userInput">hack'; UPDATE users SET passwd='abc' WHERE username='admin';--</span> </p>
+						<pre class="fragment"><p>Input: <span class="userInput">hack'; UPDATE users SET passwd='abc' WHERE username='admin</span> </p>
 <div class="fragment">SELECT email FROM users WHERE username='<span class="userInput">hack';
-UPDATE users SET passwd='abc' WHERE username='admin';--</span>';</div></pre>
+UPDATE users SET passwd='abc' WHERE username='admin</span>';</div></pre>
 					</section>					
 					<section>
 						<div>
