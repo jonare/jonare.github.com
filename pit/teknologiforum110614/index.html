@@ -48,8 +48,10 @@
 					</div>
 				</section>
 				<section>
-					<h1>Appsec?</h1>
-					<h3>Bygge motstandsdyktige applikasjoner som fungerer i den virkelige verdenen</h3>
+					<h1>Appsec?</h1><br/>
+					<div class="fragment">
+						<img src="img/BnDNr_KCIAAaA26.png-large.png"/>
+					</div>
 				</section>
 				
 				<section>
@@ -89,14 +91,14 @@
 				<section data-state="alert">
 					<h1>Ingen kan knekke applikasjonen din like bra som deg</h1>
 				</section>	
-				
+<!--				
 				<section data-state="white">
 					<img width="448" height="600" src="img/unclesam.png">
 				</section>
-
+-->
 				<section>
 					<section>
-						<h1>Sikkerhetsprinsipper</h1><br/>
+						<h1>Patterns</h1><br/>
 						<div class="fragment">
 							<h2>Antipattern: <strike>Security by obscurity</strike></h2>
 							<pre><code>
@@ -110,53 +112,68 @@ public void checkAdminCookie(HttpServletRequest request){
 }							</code></pre>
 						</div>
 					</section>
+					
 					<section>
-						<h2>Don't trust the client</h2><br/>
+						<h2>Stol ikke på klienten</h2><br/>
 						<div class="fragment">
-							<h3>Don't store secrets on the client</h3></br>
-							<h3>Don't allow the client to make security decisions</h3>
-							<p>Including client side input validation</p>
+							<h3>Klienten skal ikke ta sikkerhetsavgjørelser</h3>
+							<p>...som inputvalidering, autorisasjonskontroll o.l.</p></br>
+							<h3 class="fragment">Ikke lagre hemmeligheter på klientsiden</h3></br>
 						</div>
 					</section>
+					
 					<section>	
-							<h3>Don't trust any data from the client</h3>
+						<h3>Stol aldri på data fra klienten</h3>
 							<ul>
-								<li>Parameters from GET, POST, HEAD, PUT...</li>
-								<li>Any part of URL</li>
-								<li>http headers (incl cookies)</li>
+								<li>http-parametre for GET, POST, HEAD, PUT...</li>
+								<li>Enhver del av URL</li>
+								<li>http headere (inkl cookies)</li>
+								<li>...og alt annet som kommer fra klientsiden</li>
 							</ul>
 					</section>
-					<section>
+					
+					<section data-state="alert">
 						<h2>Never trust user input!</h2>
 						<h3>(It'll give you fleas)</h3>
 						<p>Really!</p>
 					</section>	
+					
 					<section>
-						<h2>Defense in depth</h2>
-						<p>Don't rely on a thin perimeter of security</p>
-						<p>Have overlapping controls</p>
+						<h2>Sikkerhet i dybden</h2>
+						<p>Få sikkerhetstiltak er ufeilbarlige</p>
+						<p>Kombiner overlappende teknikker</p>
 					</section>
+					
 					<section>
-						<h2>The principle of least privilege</h2>
-						<p>Not everyone needs access to the nuclear arsenal</p>
-					</section>						
+						<h2>Laveste tilgangsnivå</h2>
+						<p>Brukere og prosesser skal ikke ha unødvendig store tilganger</p>
+					</section>	
+					
+					<section>
+						<h2>Begrens angrepsflaten</h2>
+						<p>Ikke eksponer unødvendige tjenester og unødvendig funksjonalitet</p>
+					</section>	
+					
 				</section>
+				
 				<section>
 					<section>
-						<h1>The usual suspects</h1><br/>
+						<h1>Vanlige feil</h1><br/>
 						<ul>
 							<li>SQL injection</li>
 							<li>Cross site scripting</li>
-							<li>Session hijacking</li>
 							<li>Cross site request forgery</li>
+							<li>Session hijacking</li>
 						</ul>
 
 					</section>
+				</section>
+				<section>
 
 				<!-- SQLi -->
 					<section>
 							<h2>SQL injection</h2>
-							<h3>Fooling the DB server</h3>
+							<h3>Å lure DB-serveren</h3>
 					
 							<pre class="fragment"><code>
 public void updateUser(String userSuppliedName, long userID){
@@ -185,10 +202,10 @@ UPDATE users SET passwd='abc' WHERE username='admin</span>';</div></pre>
 					</section>
 					<section>
 						<h2>Demo</h2>
-						<p>Exploting a basic SQLi vulnerability</p>
+						<p>Utnytte en enkel SQLi-sårbarhet</p>
 					</section>
 					<section>
-						<h2>Fixing SQL injection</h2>
+						<h2>Fiks</h2>
 						<pre><code>
 public void updateUser(String userSuppliedName, long userID){
     String query = "UPDATE users SET name='" +
@@ -215,10 +232,10 @@ public void updateUser(String userSuppliedName, long userID){
 						</aside>
 						</section>
 						<section>
-							<h2>SQL injection summary</h2>
+							<h2>Oppsummering: SQL injection</h2>
 							<ul>
-								<li>Terrible!</li>
-								<li>Easy fix</li>
+								<li>Skrekkelig!</li>
+								<li>Enkel fiks</li>
 							</ul>
 						</section>
 					</section>
@@ -227,23 +244,23 @@ public void updateUser(String userSuppliedName, long userID){
 				<section>
 					<section>
 						<h2>Cross site scripting (XSS)</h2>
-						<h3>Fooling the webserver</h3>
+						<h3>Å lure webserveren</h3>
 					</section>
 					<section>
-						<h3>Reflected XSS</h3>
+						<h3>Reflektert XSS</h3>
 						<p>
 							<img width="575" height="500" src="img/Reflected_XSS_simplified_0.png">
 						</p>
 					</section>
 					<section>
-						<h3>Reflected XSS</h3>
+						<h3>Reflektert XSS</h3>
 						<p>
 							<img width="575" height="500" src="img/Reflected_XSS_simplified_2.png">
 						</p>
 					</section>					
 					<section>
 						<h2>Demo</h2>
-						<p>Exploting a <i>normal</i> reflected XSS vulnerability</p>
+						<p>Unytte <i>normal</i> XSS</p>
 						<aside class="notes">
 							The issue: Almost like SQLi; The browser is unable to tell data from instructions
 						</aside>		
@@ -251,118 +268,90 @@ public void updateUser(String userSuppliedName, long userID){
 					<section>
 						<div>
 							<img width="667" height="500" src="img/diesel.jpg" class="img-box"><br/>
-							<small>Photo: Sahil Anand</small>
+							<small>Foto: Sahil Anand</small>
 						</div>					
 					</section>
 
 					<section>
-						<h2>XSS attack goals</h2></br>
+						<h2>Angrepsmål for XSS</h2></br>
 						<div class="fragment">
-							<h3>Attacks against the application</h3>
-							<p>Integrity and confidentiality are gone!</p>
+							<h3>Angrep mot applikasjonen</h3>
+							<p>Integritet og konfidensialitet er borte!</p>
 						</div>
 						<div class="fragment"></br>
-							<h3>Attacks against the client</h3>
-							<p>Installing malware on the user's computer</p>
+							<h3>Angrep mot klienten</h3>
+							<p>Fin angrepsvektor for å utnytte sårbarheter på klienmaskinen</p>
 						</div>
 					</section>
+					
 					<section>
-						<h2>Fixing XSS</h2><br/>
-						<h3 class="fragment">Data on the way in: Validation</h3>
-						<p class="fragment">Strict validation is very effective!</p>
-						<p class="fragment">Blacklisting (&lt; &gt; &quot; &#39; ...) less so, but still useful</p><br/>
+						<h2>Fiks</h2><br/>
+						<h3 class="fragment">Input av data: validering</h3>
+						<p class="fragment">Streng validering mot kjente lovlige verdier er veldig effektivt!</p>
+						<p class="fragment">Blacklisting (&lt; &gt; &quot; &#39; ...) ikke i like stor grad, men kan være nyttig</p><br/>
 						<p class="fragment">Lisa O'Reilly?</p>
-						<aside class="notes">
-						You should always check that the user input appears to have legal values. 
-						</aside>
+
 					</section>
 					<section>
-						<h3>Data on the way out: escaping</h3>
-						<p>Encoding the data so that command characters are "disarmed"</p>
+						<h3>Output av data: escaping</h3>
+						<p>Encode data slik at "kommandotegn" blir ufarlige</p>
 						
 						<pre class="fragment"><code>
 http://yoursite.com/hello.jsp?name=&lt;script&gt;alert('This is XSS');&lt;/script&gt;
 						</code></pre>
 						
-						<pre class="fragment"><code>Vulnerable, unescaped use of input:
+						<pre class="fragment"><code>Sårbar, ikke-escapet bruk av inputen:
 						
 In jsp:		&lt;p&gt;Hello, ${name}&lt;/p&gt;
 Resulting html:	&lt;p&gt;Hello, &lt;script&gt;alert('This is XSS');&lt;/script&gt;&lt;/p&gt;
 						</code></pre>	
 						
-						<pre class="fragment"><code>Safe, html-escaped use of input:
+						<pre class="fragment"><code>Sikker, html-escaped bruk av inputen:
 						
 In jsp:		&lt;p&gt;Hello, &lt;c:out value="${name}"/&gt;&lt;/p&gt;
 Resulting html:	&lt;p&gt;Hello, &#38;lt;script&#38;gt;alert(&#38;#39;This is XSS&#38;#39;)&#38;lt;/script&#38;gt;&lt;/p&gt;
 						</code></pre>							
 
-						<p class="fragment">The challenge: escape for the <i>correct context, everywhere</i></p>
+						<p class="fragment">Utfordringen: Vi må escape for <i>riktig context, over alt</i>!</i></p>
 
 					</section>
-					<!--<section>
-						<h3>Content security policy (CSP)</h3>
-						<p>Standard under development</p>
-						<p>Allows the server to define valid sources for JS</p>
-					</section>-->	
 					
 					<section>
-						<h2>Other forms of XSS</h2><br/>
+						<h2>Andre former of XSS</h2><br/>
 						<div class="fragment">
 							<h3>Stored XSS</h3>
-							<p>User input stored on the server, then included in html</p>
+							<p>Brukerinput blir lagret på server, så inkludert i html</p>
 						</div>
 						<div class="fragment"><br/>
 							<h3>DOM based XSS</h3>
-							<p>Scripts reading user data and then </p>
-							<p>writing html(<code>.innerHtml, .outerHtml, .html(), document.write, createElement</code>)</p>
-							<p class="fragment">or executing (<code>eval(), setInterval(), setTimeout(), location.replace</code>)</p>
+							<p>Script som leser input fra bruker, og så</p>
+							<p>skriver html(<code>.innerHtml, .outerHtml, .html(), document.write, createElement</code>)</p>
+							<p class="fragment">eller eksekverer direkte (<code>eval(), setInterval(), setTimeout(), location.replace</code>)</p>
 						</div>						
 					</section>
 					<section>
-							<h2>XSS summary</h2>
+							<h2>XSS: Oppsummering</h2>
 							<ul>
-								<li>Very, very widespread</li>
-								<li>Bad, but often* limited to single sessions</li>
-								<li>Difficult to get right</li>
-								<li>Use input validation, output escaping and consider implementing a Content Security Policy</li>
+								<li>Veldig, veldig vanlig</li>
+								<li>Ille, men ofte* begrenset til enkeltsesjoner eller requests</li>
+								<li>Vanskelig å løse universielt</li>
+								<li>Bruk inputvalidering, escaping av output, og helst en Content Security Policy</li>
 							</ul>
 					</section>
 				</section>
-				<section>
-					<section>
-					<h2>Session hijacking</h2>
-						<div class="fragment">
-							<p>http is stateless</p>
-							<pre class="fragment"><code>
-JSESSIONID=y2rzQ9JRgrP9J3vCX3phJ1XJbDdgLqgDSBYM7qBRGSDQr7PdnF1B!-1147520699;
-							</code></pre>
-						</div>
-						<div class="fragment"></br>
-							Steal the cookie - steal the session!
-						</div>
-					</section>
-					<section>
-						<h3>Protecting the session cookie</h3>
-						
-						<p class="fragment">1. Transport layer encryption (TLS/SSL)</p></br>
-						<p class="fragment">2. Cookie flags:</p>
-						<p>
-							<span class="fragment">httpOnly - avoid access through XSS<br/></span>
-							<span class="fragment">secure - avoid clear text transmission</span>
-						</p><br/>
-						<p class="fragment">3. Re-authentication</p>
-					</section>	
-				</section>
+				
+
+				
 				<section>
 					<section>
 						<h2>Cross Site Request Forgery (CSRF)</h2>
-						<h3>Fooling the browser's session handling</h3></br>
+						<h3>Å lure vevmyserens sesjonshåndtering</h3></br>
 						<h2 class="fragment">Demo</h2>
-						<p class="fragment"><br/><i>Predictable</i> requests to a site can be forged</p>
+						<p class="fragment"><br/><i>Forutsigbare</i> requests til en server kan forfalskes</p>
 					</section>
 					<section>
-						<h2>Fixing CSRF</h2>
-						<h3>Adding unpredictability</h3>
+						<h2>CSRF: Fiks</h2>
+						<h3>Litt uforutsigbarhet</h3>
 							<pre><code>
 &lt;form action="account.jsp"&gt;
     &lt;input type="hidden" name="csrf_token" 
@@ -375,30 +364,43 @@ JSESSIONID=y2rzQ9JRgrP9J3vCX3phJ1XJbDdgLqgDSBYM7qBRGSDQr7PdnF1B!-1147520699;
 							</code></pre>						
 					</section>
 					<section>
-						<h2>CSRF summary</h2>
+						<h2>CSRF: Oppsummering</h2>
 						<ul>
-							<li>Easy &amp; effective attack</li>
-							<li>Easy fix (tokens)</li>
+							<li>Enkelt &amp; effektivt angrep</li>
+							<li>Enkel fiks (tokens)</li>
 						</ul>
 					</section>
 				</section>
+				
 				<section>
-					<h1>Wrap up</h1>
-					<h3 class="fragment">1. Appsec must be solved in the app layer</h3>
-					<h3 class="fragment">2. Security patterns</h3>
-					<p class="fragment">Do not trust user input!</p><br/>
-					<h3 class="fragment">3. The usual suspects</h3>
-					<p class="fragment">SQLi</p>
-					<p class="fragment">XSS</p>
-					<p class="fragment">Session issues</p>
-					<p class="fragment">CSRF</p>
-				</section>				
-				<section>
-					<h3>More reading</h3>
-					<div class="smallish">
+					<section>
+					<h2>Sesjonsstjeling</h2>
+						<div class="fragment">
+							<p>http er tilstandsløs</p>
+							<pre class="fragment"><code>
+JSESSIONID=y2rzQ9JRgrP9J3vCX3phJ1XJbDdgLqgDSBYM7qBRGSDQr7PdnF1B!-1147520699;
+							</code></pre>
+						</div>
+						<div class="fragment"></br>
+							Stjeler man cookien så tjeler man sesjonen!
+						</div>
+					</section>
+					<section>
+						<h3>Beskyttelse av session cookie</h3>
+						
+						<p class="fragment">1. Transport layer encryption (TLS/SSL)</p></br>
+						<p class="fragment">2. Cookie flagg:</p>
 						<p>
-							These slides are available at <a href="http://jonare.github.com/jz12/">jonare.github.com/jz12/</a>
-						</p>
+							<span class="fragment">httpOnly - hindre tilgang fra script og XSS<br/></span>
+							<span class="fragment">secure - nekte overføring av cookie via ukryptert http</span>
+						</p><br/>
+						<p class="fragment">3. Reautentisering</p>
+					</section>	
+				</section>
+								
+				<section>
+					<h3>hyperduperlenker</h3>
+					<div class="smallish">
 						<p>
 							owasp.org</br>
 							<a href="https://www.owasp.org/index.php/OWASP_Broken_Web_Applications_Project">OWASP Broken Web Applications Project</a></br>
@@ -417,7 +419,7 @@ JSESSIONID=y2rzQ9JRgrP9J3vCX3phJ1XJbDdgLqgDSBYM7qBRGSDQr7PdnF1B!-1147520699;
 							<a href="http://ha.ckers.org/xss.html">Attack vectors at ha.ckers.org</a></br>
 						</p>
 						<p>
-							Tools</br>
+							Verktøy</br>
 							<a href="https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project">OWASP Zed Attack Proxy (ZAP)</a></br>
 							<a href="https://addons.mozilla.org/en-US/firefox/addon/tamper-data/">Firefox add-on Tamper Data</a></br>
 						</p>
