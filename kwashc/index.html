@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Application security workshop3</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/league.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+				<section>
+					<h1>Application security workshop</h1>
+					<br/>
+					<h2>Jon Are Rakvåg</h2>
+					<p>
+						@jonarer | jonare@jonare.no
+					</p>
+				</section>
+
+				<section>
+					<h1>Agenda</h1>
+					<p>
+						<ol>
+							<li>Intro</li>
+							<li>Cross site scripting (XSS)</li>
+							<li>Cross site request forgery (CSRF)</li>
+							<li>Broken security features</li>
+							<li>Misconfiguration</li>
+							<li>Assorted issues</li>
+							<li>Cryptography</li>
+							<li>Injection</li>
+							<li>Summary</li>
+						</ol>
+					</p>
+				</section>
+
+				<section>
+					<section>
+						<h1>Intro</h1>
+						<h2>Goals</h2>
+						<h3>Hands-on appsec experience</h3>
+					</section>
+					<section>
+						<h2>Appsec != security features</h2>
+						<img src="img/safe.jpg">
+					</section>
+					<section>
+						<h2>Tools of the trade</h2>
+						<p>
+							<ul>
+								<li>Firefox</li>
+								<li><a href="https://portswigger.net/burp/download.html" target="_blank">Burp Suite</a></li>
+								<li>(Java, an IDE, mvn, git)</li>
+							</ul>
+						</p>
+					</section>
+					<section>
+						<h2>Resources</h2>
+						<ul>
+							<li>google</li>
+							<li><a href="https://www.owasp.org/index.php/Top_10_2013-Top_10">OWASP Top 10</a></li>
+							<li><a href="https://www.owasp.org/index.php/OWASP_Cheat_Sheet_Series">OWASP Cheat Sheets</a></li>
+						</ul>
+					</section>
+					<section>
+						<h2>KWASHC</h2>
+						<aside class="notes">
+							Intro to the KWASHC system, the server-client setup, how to execute tests.
+						</aside>
+					</section>
+					<section>
+						<h2>The website</h2>
+						<p>
+							<img width="964" height="510" src="img/kwashc.png"/> <!-- TODO: Update to reflect Spring MVC -->
+						</p>
+					</section>
+				</section>
+
+
+				<!-- XSS -->
+				<section>
+					<section>
+						<h1>Cross Site Scripting (XSS)</h1>
+						<h3>Fooling your app to include *my* malicious JS</h3>
+					</section>
+					<section>
+						<h3>Reflected XSS</h3>
+						<p>
+							<img width="575" height="500" src="img/Reflected_XSS_simplified_0.png">
+						</p>
+					</section>
+					<section>
+						<h3>Reflected XSS</h3>
+						<p>
+							<img width="575" height="500" src="img/Reflected_XSS_simplified_2.png">
+						</p>
+					</section>
+					<section>
+						<h2>Demo</h2>
+					</section>
+					<section>
+						<h3>So what?</h3>
+						<div class="fragment">
+							<p>
+								The attacker can now:
+							<ul>
+								<li>Change everything the user is shown</li>
+								<li>Manipulate all requests to the server</li>
+								<li>Forge new requests</li>
+								<li>Send sensitive data to third party server</li>
+								<li>Steal the session?</li>
+								<li>Probably install malware on the client</li>
+							</ul>
+							</p>
+						</div>
+					</section>
+					<section>
+						<h2>Other forms of XSS</h2><br/>
+						<div>
+							<h3>Stored XSS</h3>
+							<p>User input stored on the server, then included as html</p>
+						</div>
+					</section>
+					<section>
+						<h3>DOM based XSS (client side)</h3>
+						<p>Scripts reading user data and then </p>
+						<p>writing html(<code>.innerHtml, .outerHtml, .html(), document.write, createElement</code>)</p>
+						<p class="fragment">or executing (<code>eval(), setInterval(), setTimeout(), new Function() or location.replace</code>)</p>
+					</section>
+
+					<section data-background="img/1.gif">
+						<h1>Your turn</h1>
+					</section>
+
+					<section>
+						<h2>Real world XSS mitigation</h2>
+						<ul>
+							<li>Escape output</li>
+							<li>Avoid user data in dangerous JS functions</li>
+							<li>Protect session cookies (httpOnly)</li>
+							<li>Set a Content Security Policy (CSP)</li>
+							<li>Validate input</li>
+							<li>Use a mature front end framework</li>
+						</ul>
+					</section>
+				</section>
+
+				<!-- CSRF -->
+				<section>
+					<section>
+						<h1 data-background="#69FA9E">Cross Site Request Forgery (CSRF)</h1>
+						<h3>Fooling the browser's session handling</h3></br>
+						<h2 class="fragment">Demo</h2>
+						<p class="fragment"><br/><i>Predictable</i> requests to a site can be forged</p>
+					</section>
+					<section>
+						<h2>Fixing CSRF</h2>
+						<h3>Adding unpredictability</h3>
+								<pre><code>
+&lt;form action="account.jsp"&gt;
+&lt;input type="hidden" name="csrf_token" value="FRUjQxPbyqmTtuXxip2tOWEqLFd"&gt;
+
+Username:  &lt;input type="hidden" name="username" value="user"&gt;
+Password:  &lt;input type="password" name="password"&gt;
+...
+&lt;/form&gt;
+								</code></pre>
+					</section>
+					<section data-background="img/2.gif">
+						<h1>Your turn</h1>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>Missing or broken security features</h1>
+					</section>
+
+					<!-- Validation -->
+					<section data-autoslide="5000">
+						<h2>Input validation</h2>
+						<h3>The first line of defense</h3>
+					</section>
+					<section data-background="rgba( 200, 50, 30, 0.8 )">
+						<h1>Do not trust user input</h1>
+						<h2>Validate all the things!</h2>
+					</section>
+					<section>
+						<p>
+							<h3>Do</h3>
+							<ol>
+								<li>Parse strings to proper objects or enums</li>
+								<li class="fragment">Whitelist characters</li>
+								<li class="fragment">Validate server side</li>
+							</ol>
+						</p>
+						<p>
+							<div class="fragment">
+								<h3>Do not</h3>
+									<ol style="text-decoration:line-through;">
+										<li>Blacklist characters (<code>', ", <, ></code>...)</li>
+										<li class="fragment">Blacklist whole strings (<code>SELECT, &lt;script&gt;</code>...) </li>
+										<li class="fragment">(Only) validate client side</li>
+									</ol>
+							</div>
+						</p>
+					</section>
+					<section>
+						<h2>Validation limitations</h2>
+						<ul>
+							<li>We often don't know in what context the data will be used</li>
+							<li class="fragment">Functional limitations (Lisa O'Reilly? Henrik L'Abée-Lund? Passwords? Discussions of JavaScript?)</li>
+						</ul>
+						<p class="fragment">
+							 -> validate as strictly as you can given the functional constraints
+						</p>
+					</section>
+
+					<section>
+						<h2>Malicious code</h2>
+						<h3>(or misplaced dev/test features)</h3>
+					</section>
+					<section>
+						<h2>Unvalidated redirects</h2>
+						<h3>Abusing users' trust in your site</h3>
+						<h3 class="fragment">Demo</h3>
+						<aside class="notes">
+							Web security is all about users' trust. Don't let others abuse the trust users have in your
+							site. Demo: See KWASHC redirect test.
+						</aside>
+					</section>
+					<section data-background="img/3.gif">
+						<h1>Your turn</h1>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>Misconfiguration</h1>
+					</section>
+					<section>
+						<h2>Magic frameworks</h2>
+						<h3>...and insecure defaults</h3>
+					</section>
+					<section>
+						<h2>Broken security</h2>
+						<h3>through simple misconfiguration</h3>
+					</section>
+					<section>
+						<h2>Improper error handling</h2>
+						<p>
+							Technical error messages are interesting!
+						</p>
+						<p  class="fragment">
+							-> Detailed logs serveside, generic messages to the client
+						</p>
+					</section>
+					<section data-background="img/4.gif">
+						<h1>Your turn</h1>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>Assorted issues</h1>
+					</section>
+					<section>
+						<h2>Click-jacking</h2>
+						<h3 class="fragment">Demo</h3>
+					</section>
+					<section>
+						<h2>Known vulnerable components</h2>
+						<h3 class="fragment">Demo</h3>
+					</section>
+					<section>
+						<h3>Real world known vulnerable components mitigation</h3>
+						<p>
+							<ul>
+								<li>Automate, and plan for patching</li>
+								<li>Java: <a href="https://www.owasp.org/index.php/OWASP_Dependency_Check" target="_blank">OWASP Dependency Check</a>
+									or <a href="http://www.sonatype.com/nexus-repository-sonatype" target="_blank">Nexus Pro</a> </li>
+								<li>JavaScript: <a href="http://retirejs.github.io/retire.js/" target="_blank">retire.js</a></li>
+							</ul>
+						</p>
+					</section>
+
+					<section data-background="img/5.gif">
+						<h1>Your turn</h1>
+					</section>
+				</section>
+				<section> <!-- crypto -->
+					<section>
+						<h1>Cryptography</h1>
+						<h2>is hard</h2>
+					</section>
+					<section>
+						<h2>Cryptography != obfuscation</h2>
+					</section>
+					<section>
+						<p>
+						<h2>Do</h2>
+						<ol>
+							<li>Cheat! Use COTS, frameworks, established services, best practices and the like</li>
+							<li class="fragment">Expect the encryption to be broken at some point</li>
+							<li class="fragment">Hire some help. Seriously. Crypto is hard.</li>
+						</ol>
+						</p>
+						<p>
+						<div class="fragment">
+							<h2>Do not</h2>
+							<ol style="text-decoration:line-through;">
+								<li>Roll your own crypto!</li>
+								<li>Use established crypto in new innovative ways</li>
+							</ol>
+						</div>
+						</p>
+					</section>
+					<section>
+						<h2>Password storage</h2>
+						<h3>(You should probably use some form of LDAP server, but let's look at
+							<a href="http://jonare.github.io/jz12/passwords/" target="_blank">password storage best practice</a>)</h3>
+					</section>
+					<section data-background="img/6.gif">
+						<h1>Your turn</h1>
+					</section>
+				</section>
+				<section>
+					<h1>Injection</h1>
+					<h3>
+						KWASHC hasn't got any injection tasks, but it's a serious issue. See this
+						<a href="http://jonare.github.io/jz12/appsec/#/5/1" target="_blank">SQL injection example</a>,
+						but don't forget XML, LDAP or OS command injection.
+					</h3>
+				</section>
+				<section>
+					<section>
+						<h1>Summary</h1>
+					</section>
+					<section>
+						<h1>Security features &#8834; application security</h1>
+					</section>
+					<section>
+						<h1>Bad things happen when you trust user input</h1>
+					</section>
+					<section>
+						<h1>OWASP is a great community resource</h1>
+						<h3>Check out <a href="https://www.owasp.org/index.php/Main_Page">owasp.org</a> or come join us
+							<a href="http://www.meetup.com/OWASP-Norway/">in Oslo</a></h3>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
