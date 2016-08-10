@@ -44,7 +44,7 @@
 					<br/>
 					<h2>Jon Are Rakvåg</h2>
 					<p>
-						@jonarer | jonare@jonare.no
+						@jonarer
 					</p>
 				</section>
 
@@ -102,7 +102,7 @@
 					<section>
 						<h2>The website</h2>
 						<p>
-							<img width="964" height="510" src="img/kwashc.png"/> <!-- TODO: Update to reflect Spring MVC -->
+							<img width="964" height="510" src="img/kwashc.png"/>
 						</p>
 					</section>
 				</section>
@@ -159,21 +159,26 @@
 						<p class="fragment">or executing (<code>eval(), setInterval(), setTimeout(), new Function() or location.replace</code>)</p>
 					</section>
 
+					<section>
+						<h2>XSS mitigations</h2>
+						<ul>
+							<li>Escape output</li>
+							<li>Validate input</li>
+							<li>Avoid user data in dangerous JS functions</li>
+							<span class="fragment">
+								<li>Write user data as text in JS (.text() etc)</li>
+								<li>Protect session cookies (httpOnly)</li>
+								<li>Set a Content Security Policy (CSP)</li>
+								<li>Use a mature front end framework</li>
+							</span>
+						</ul>
+					</section>
+
 					<section data-background="img/1.gif">
 						<h1>Your turn</h1>
 					</section>
 
-					<section>
-						<h2>Real world XSS mitigation</h2>
-						<ul>
-							<li>Escape output</li>
-							<li>Avoid user data in dangerous JS functions</li>
-							<li>Protect session cookies (httpOnly)</li>
-							<li>Set a Content Security Policy (CSP)</li>
-							<li>Validate input</li>
-							<li>Use a mature front end framework</li>
-						</ul>
-					</section>
+
 				</section>
 
 				<!-- CSRF -->
@@ -221,7 +226,7 @@ Password:  &lt;input type="password" name="password"&gt;
 							<h3>Do</h3>
 							<ol>
 								<li>Parse strings to proper objects or enums</li>
-								<li class="fragment">Whitelist characters</li>
+								<li class="fragment">...or whitelist characters</li>
 								<li class="fragment">Validate server side</li>
 							</ol>
 						</p>
@@ -231,7 +236,7 @@ Password:  &lt;input type="password" name="password"&gt;
 									<ol style="text-decoration:line-through;">
 										<li>Blacklist characters (<code>', ", <, ></code>...)</li>
 										<li class="fragment">Blacklist whole strings (<code>SELECT, &lt;script&gt;</code>...) </li>
-										<li class="fragment">(Only) validate client side</li>
+										<li class="fragment">Only validate client side (JS, HTML5, thick client...)</li>
 									</ol>
 							</div>
 						</p>
