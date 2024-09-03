@@ -1,1 +1,0 @@
-import{o as t,b as s,e as o,f as a}from"../modules/vue-950N4G8P.js";import{u as n}from"./context-vBgio9KK.js";const r={class:"slidev-layout center h-full grid place-content-center statement"},c={class:"my-auto"},m={__name:"statement",setup(l){return n(),(e,_)=>(t(),s("div",r,[o("div",c,[a(e.$slots,"default")])]))}};export{m as _};
